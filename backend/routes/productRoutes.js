@@ -1,11 +1,17 @@
 import express from "express";
-import { addProduct, getProducts } from "../controllers/productController.js";
-import Product from "../models/Product.js"; 
+import {
+  addProduct,
+  getProducts,
+  deleteProduct,
+  updateProduct
+} from "../controllers/productController.js";
+import Product from "../models/Product.js";
 
 const router = express.Router();
 
-router.post("/add", addProduct); 
+router.post("/add", addProduct);
 router.get("/", getProducts);
+
 
 router.get("/:id", async (req, res) => {
   try {
@@ -13,12 +19,13 @@ router.get("/:id", async (req, res) => {
     if (!product) return res.status(404).json({ msg: "Product not found" });
     res.json(product);
   } catch (err) {
-    console.error(" Product fetch failed:", err.message);
     res.status(500).json({ msg: err.message });
   }
 });
 
 
-
+router.delete("/delete/:id", deleteProduct);
+router.put("/update/:id", updateProduct);
 
 export default router;
+
